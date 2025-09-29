@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import AppLayout from '@/layouts/app-layout';
 
 export default function CreateCourse() {
@@ -21,6 +22,7 @@ export default function CreateCourse() {
         price: '',
         thumbnail: null as File | null,
         thumbnail_url: '',
+        published: false,
     });
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +148,20 @@ export default function CreateCourse() {
                                             </p>
                                             <InputError message={errors.price} />
                                         </div>
+
+                                        <div className="flex items-center space-x-2">
+                                            <Checkbox
+                                                id="published"
+                                                checked={data.published}
+                                                onCheckedChange={(checked) => setData('published', !!checked)}
+                                            />
+                                            <Label htmlFor="published" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                Publish this course
+                                            </Label>
+                                        </div>
+                                        <p className="text-sm text-muted-foreground">
+                                            Published courses will be visible to all users on the home page. You can always change this later.
+                                        </p>
                                     </CardContent>
                                 </Card>
                             </div>

@@ -1,10 +1,11 @@
 import CourseController from '@/actions/App/Http/Controllers/CourseController';
 import { courses } from '@/routes';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Globe, Lock } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { type SharedData } from '@/types';
 
@@ -16,6 +17,7 @@ interface Course {
     thumbnail?: string;
     thumbnail_url?: string;
     price: string | number;
+    published: boolean;
     user: {
         id: number;
         name: string;
@@ -43,18 +45,18 @@ export default function CoursesIndex({ courses }: Props) {
         >
             <Head title="Courses" />
 
-            <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 className="text-3xl font-bold">Courses</h1>
-                        <p className="text-muted-foreground mt-2">
+            <div className="max-w-7xl mx-auto space-y-8">
+                <div className="flex justify-between items-start">
+                    <div className="space-y-2">
+                        <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
+                        <p className="text-muted-foreground text-lg">
                             Create and manage your online courses
                         </p>
                     </div>
 
                     {auth.user && (
                         <Link href={CourseController.create.url()}>
-                            <Button>
+                            <Button size="lg">
                                 <Plus className="h-4 w-4 mr-2" />
                                 Create Course
                             </Button>
@@ -63,16 +65,21 @@ export default function CoursesIndex({ courses }: Props) {
                 </div>
 
                 {courses.length === 0 ? (
-                    <Card>
-                        <CardContent className="flex flex-col items-center justify-center py-12">
-                            <div className="text-center">
-                                <h3 className="text-lg font-semibold mb-2">No courses yet</h3>
-                                <p className="text-muted-foreground mb-4">
-                                    Get started by creating your first course
-                                </p>
+                    <Card className="border-dashed">
+                        <CardContent className="flex flex-col items-center justify-center py-16 px-6">
+                            <div className="text-center space-y-4">
+                                <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                                    <Plus className="h-6 w-6 text-muted-foreground" />
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-xl font-semibold">No courses yet</h3>
+                                    <p className="text-muted-foreground max-w-md">
+                                        Get started by creating your first course and begin sharing your knowledge with the world.
+                                    </p>
+                                </div>
                                 {auth.user && (
                                     <Link href={CourseController.create.url()}>
-                                        <Button>
+                                        <Button size="lg" className="mt-4">
                                             <Plus className="h-4 w-4 mr-2" />
                                             Create Your First Course
                                         </Button>
@@ -82,7 +89,7 @@ export default function CoursesIndex({ courses }: Props) {
                         </CardContent>
                     </Card>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {courses.map((course) => (
                             <Card key={course.id} className="overflow-hidden">
                                 <div className="aspect-video bg-muted">
@@ -101,18 +108,38 @@ export default function CoursesIndex({ courses }: Props) {
                                         </div>
                                     )}
                                 </div>
-                                <CardHeader>
-                                    <CardTitle className="line-clamp-1">{course.title}</CardTitle>
-                                    <CardDescription className="line-clamp-2">
-                                        {course.subtitle}
-                                    </CardDescription>
+                                <CardHeader className="space-y-2">
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex-1 min-w-0">
+                                            <CardTitle className="line-clamp-1 text-lg">{course.title}</CardTitle>
+                                            <CardDescription className="line-clamp-2">
+                                                {course.subtitle}
+                                            </CardDescription>
+                                        </div>
+                                        <Badge
+                                            variant={course.published ? "default" : "secondary"}
+                                            className="ml-2 flex items-center gap-1"
+                                        >
+                                            {course.published ? (
+                                                <>
+                                                    <Globe className="h-3 w-3" />
+                                                    Published
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Lock className="h-3 w-3" />
+                                                    Draft
+                                                </>
+                                            )}
+                                        </Badge>
+                                    </div>
                                 </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                                <CardContent className="space-y-4">
+                                    <p className="text-sm text-muted-foreground line-clamp-3">
                                         {course.description}
                                     </p>
 
-                                    <div className="flex justify-between items-center mb-4">
+                                    <div className="flex justify-between items-center">
                                         <span className="font-semibold text-lg">
                                             ${Number(course.price).toFixed(2)}
                                         </span>
@@ -121,7 +148,7 @@ export default function CoursesIndex({ courses }: Props) {
                                         </span>
                                     </div>
 
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 pt-2">
                                         <Link
                                             href={CourseController.show.url({ course: course.id })}
                                             className="flex-1"

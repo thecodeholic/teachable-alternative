@@ -17,10 +17,12 @@ class Course extends Model
         'description',
         'thumbnail',
         'price',
+        'published',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'published' => 'boolean',
     ];
 
     protected $appends = ['thumbnail_url'];

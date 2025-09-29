@@ -15,6 +15,7 @@ interface Course {
     thumbnail?: string;
     thumbnail_url?: string;
     price: string | number;
+    published: boolean;
     user: {
         id: number;
         name: string;

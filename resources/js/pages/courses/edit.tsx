@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import AppLayout from '@/layouts/app-layout';
 
 interface Course {
@@ -19,6 +20,7 @@ interface Course {
     thumbnail?: string;
     thumbnail_url?: string;
     price: string | number;
+    published: boolean;
     user: {
         id: number;
         name: string;
@@ -40,6 +42,7 @@ export default function EditCourse({ course }: Props) {
         price: course.price.toString(),
         thumbnail: null as File | null,
         thumbnail_url: course.thumbnail_url || '',
+        published: course.published,
     });
 
     // Set initial thumbnail preview if course has a thumbnail
@@ -96,6 +99,7 @@ export default function EditCourse({ course }: Props) {
         formData.append('subtitle', data.subtitle);
         formData.append('description', data.description);
         formData.append('price', data.price);
+        formData.append('published', data.published ? '1' : '0');
 
         if (data.thumbnail) {
             formData.append('thumbnail', data.thumbnail);
@@ -196,6 +200,20 @@ export default function EditCourse({ course }: Props) {
                                 />
                                 <InputError message={errors.price} />
                             </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="published"
+                                    checked={data.published}
+                                    onCheckedChange={(checked) => setData('published', !!checked)}
+                                />
+                                <Label htmlFor="published" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Publish this course
+                                </Label>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Published courses will be visible to all users on the home page.
+                            </p>
 
                             <div className="flex gap-4">
                                 <Button

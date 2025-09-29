@@ -14,19 +14,24 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('user')->latest()->get()->map(function ($course) {
-            return [
-                'id' => $course->id,
-                'title' => $course->title,
-                'subtitle' => $course->subtitle,
-                'description' => $course->description,
-                'thumbnail' => $course->thumbnail,
-                'thumbnail_url' => $course->thumbnail_url,
-                'price' => $course->price,
-                'created_at' => $course->created_at,
-                'user' => $course->user,
-            ];
-        });
+        $courses = Course::with('user')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get()
+            ->map(function ($course) {
+                return [
+                    'id' => $course->id,
+                    'title' => $course->title,
+                    'subtitle' => $course->subtitle,
+                    'description' => $course->description,
+                    'thumbnail' => $course->thumbnail,
+                    'thumbnail_url' => $course->thumbnail_url,
+                    'price' => $course->price,
+                    'published' => $course->published,
+                    'created_at' => $course->created_at,
+                    'user' => $course->user,
+                ];
+            });
 
         return Inertia::render('courses/index', [
             'courses' => $courses
@@ -53,6 +58,7 @@ class CourseController extends Controller
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // 10MB max
             'thumbnail_url' => 'nullable|url',
             'price' => 'required|numeric|min:0',
+            'published' => 'boolean',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -91,6 +97,7 @@ class CourseController extends Controller
             'thumbnail' => $course->thumbnail,
             'thumbnail_url' => $course->thumbnail_url,
             'price' => $course->price,
+            'published' => $course->published,
             'created_at' => $course->created_at,
             'user' => $course->user,
         ];
@@ -122,6 +129,7 @@ class CourseController extends Controller
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // 10MB max
             'thumbnail_url' => 'nullable|url',
             'price' => 'required|numeric|min:0',
+            'published' => 'boolean',
         ]);
 
         // Handle thumbnail upload
