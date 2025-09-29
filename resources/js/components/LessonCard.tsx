@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Edit, Trash2, GripVertical } from 'lucide-react';
+import { useForm, Link } from '@inertiajs/react';
+import { Edit, Trash2, GripVertical, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -117,6 +117,14 @@ export default function LessonCard({ lesson, onReorder }: LessonCardProps) {
 
                         {!isEditing && (
                             <div className="flex gap-1">
+                                <Link href={`/lessons/${lesson.id}`}>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                    >
+                                        <Eye className="h-3 w-3" />
+                                    </Button>
+                                </Link>
                                 <Button
                                     variant="ghost"
                                     size="sm"

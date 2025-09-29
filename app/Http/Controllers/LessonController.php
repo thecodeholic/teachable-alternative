@@ -12,6 +12,24 @@ use Inertia\Inertia;
 class LessonController extends Controller
 {
     /**
+     * Display the specified lesson.
+     */
+    public function show(Lesson $lesson)
+    {
+        // Check if user owns the course
+        $module = $lesson->module;
+        if ($module->course->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $lesson->load(['module.course', 'videos', 'attachments']);
+
+        return Inertia::render('lessons/show', [
+            'lesson' => $lesson,
+        ]);
+    }
+
+    /**
      * Store a newly created lesson.
      */
     public function store(Request $request)
