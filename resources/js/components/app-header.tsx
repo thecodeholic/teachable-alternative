@@ -29,20 +29,13 @@ import {
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
+import CourseController from '@/actions/App/Http/Controllers/CourseController';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, GraduationCap, Plus } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
 
 const rightNavItems: NavItem[] = [
     {
@@ -68,6 +61,25 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+
+    const isAuthenticated = !!auth?.user;
+    const mainNavItems: NavItem[] = isAuthenticated ? [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'My Courses',
+            href: CourseController.index.url(),
+            icon: GraduationCap,
+        },
+        {
+            title: 'Create Course',
+            href: CourseController.create.url(),
+            icon: Plus,
+        },
+    ] : [];
     return (
         <>
             <div className="border-b border-sidebar-border/80">

@@ -11,18 +11,11 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import CourseController from '@/actions/App/Http/Controllers/CourseController';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { BookOpen, Folder, LayoutGrid, Plus, GraduationCap } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
 
 const footerNavItems: NavItem[] = [
     {
@@ -38,13 +31,35 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const isAuthenticated = !!auth?.user;
+
+    // Only show authenticated user navigation items
+    const mainNavItems: NavItem[] = isAuthenticated ? [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'My Courses',
+            href: CourseController.index.url(),
+            icon: GraduationCap,
+        },
+        {
+            title: 'Create Course',
+            href: CourseController.create.url(),
+            icon: Plus,
+        },
+    ] : [];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={isAuthenticated ? dashboard() : '/'} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

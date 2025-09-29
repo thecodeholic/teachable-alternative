@@ -1,8 +1,28 @@
+import CourseController from '@/actions/App/Http/Controllers/CourseController';
 import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
-export default function Welcome() {
+interface Course {
+    id: number;
+    title: string;
+    subtitle: string;
+    description: string;
+    thumbnail?: string;
+    thumbnail_url?: string;
+    price: string | number;
+    user: {
+        id: number;
+        name: string;
+    };
+    created_at: string;
+}
+
+interface Props {
+    courses: Course[];
+}
+
+export default function Welcome({ courses }: Props) {
     const { auth } = usePage<SharedData>().props;
 
     return (
@@ -799,6 +819,72 @@ export default function Welcome() {
                         </div>
                     </main>
                 </div>
+
+                {/* Courses Section */}
+                {courses.length > 0 && (
+                    <div className="mt-16 w-full max-w-[335px] lg:max-w-4xl">
+                        <div className="mb-8 text-center">
+                            <h2 className="text-2xl font-semibold mb-2">Featured Courses</h2>
+                            <p className="text-muted-foreground">Discover amazing courses created by our community</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {courses.slice(0, 6).map((course) => (
+                                <div key={course.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden dark:bg-[#161615] dark:border-[#3E3E3A]">
+                                    <div className="aspect-video bg-gray-100 dark:bg-gray-800">
+                                        {(course.thumbnail_url || course.thumbnail) ? (
+                                            <img
+                                                src={course.thumbnail_url || course.thumbnail}
+                                                alt={course.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700">
+                                                <div className="text-center p-4">
+                                                    <div className="text-4xl mb-2">📚</div>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Course Image</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="font-semibold text-lg mb-2 line-clamp-1">{course.title}</h3>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{course.subtitle}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-500 mb-4 line-clamp-3">{course.description}</p>
+
+                                        <div className="flex justify-between items-center mb-4">
+                                            <span className="font-bold text-lg text-[#f53003] dark:text-[#FF4433]">
+                                                ${Number(course.price).toFixed(2)}
+                                            </span>
+                                            <span className="text-sm text-gray-500 dark:text-gray-500">
+                                                by {course.user.name}
+                                            </span>
+                                        </div>
+
+                                        <Link
+                                            href={CourseController.show.url({ course: course.id })}
+                                            className="inline-block w-full text-center rounded-sm border border-[#19140035] px-4 py-2 text-sm text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                        >
+                                            View Course
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {courses.length > 6 && (
+                            <div className="text-center mt-8">
+                                <Link
+                                    href={CourseController.index.url()}
+                                    className="inline-block rounded-sm border border-[#19140035] px-6 py-2 text-sm text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                >
+                                    View All Courses
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <div className="hidden h-14.5 lg:block"></div>
             </div>
         </>

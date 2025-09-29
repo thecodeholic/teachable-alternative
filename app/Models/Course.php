@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Course extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'title',
+        'subtitle',
+        'description',
+        'thumbnail',
+        'price',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
+
+    protected $appends = ['thumbnail_url'];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        if (!$this->thumbnail) {
+            return null;
+        }
+
+        // If it's already a URL, return it
+        if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
+            return $this->thumbnail;
+        }
+
+        // Otherwise, it's a stored file path
+        return asset('storage/' . $this->thumbnail);
+    }
+}
