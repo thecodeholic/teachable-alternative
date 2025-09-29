@@ -1,8 +1,8 @@
 import CourseController from '@/actions/App/Http/Controllers/CourseController';
 import { courses } from '@/routes';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, useForm, router } from '@inertiajs/react';
 import { LoaderCircle, Upload, Image as ImageIcon, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -32,33 +32,92 @@ interface Props {
 
 export default function EditCourse({ course }: Props) {
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-    const [thumbnailUrl, setThumbnailUrl] = useState<string>(course.thumbnail_url || '');
+
+    const { data, setData, patch, processing, errors, reset } = useForm({
+        title: course.title,
+        subtitle: course.subtitle,
+        description: course.description,
+        price: course.price.toString(),
+        thumbnail: null as File | null,
+        thumbnail_url: course.thumbnail_url || '',
+    });
+
+    // Set initial thumbnail preview if course has a thumbnail
+    useEffect(() => {
+        if (course.thumbnail_url) {
+            setThumbnailPreview(course.thumbnail_url);
+        }
+    }, [course.thumbnail_url]);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setThumbnailFile(file);
-            setThumbnailUrl(''); // Clear URL when file is selected
+            setData('thumbnail', file);
+            setData('thumbnail_url', ''); // Clear URL when file is selected
             const reader = new FileReader();
             reader.onload = (e) => {
                 setThumbnailPreview(e.target?.result as string);
             };
             reader.readAsDataURL(file);
         }
+        // Reset the file input to allow selecting the same file again
+        event.target.value = '';
     };
 
     const removeThumbnail = () => {
-        setThumbnailFile(null);
+        setData('thumbnail', null);
+        setData('thumbnail_url', '');
         setThumbnailPreview(null);
     };
 
     const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setThumbnailUrl(event.target.value);
-        if (event.target.value) {
-            setThumbnailFile(null);
+        const url = event.target.value;
+        setData('thumbnail_url', url);
+        if (url) {
+            setData('thumbnail', null);
             setThumbnailPreview(null);
         }
+        // Update preview if it's a valid URL
+        if (url) {
+            setThumbnailPreview(url);
+        }
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('Form data being submitted:', data);
+        console.log('Thumbnail file:', data.thumbnail);
+        console.log('Thumbnail URL:', data.thumbnail_url);
+
+        // Create FormData for proper file upload handling
+        const formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('title', data.title);
+        formData.append('subtitle', data.subtitle);
+        formData.append('description', data.description);
+        formData.append('price', data.price);
+
+        if (data.thumbnail) {
+            formData.append('thumbnail', data.thumbnail);
+        }
+        if (data.thumbnail_url) {
+            formData.append('thumbnail_url', data.thumbnail_url);
+        }
+
+        console.log('FormData contents:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        // Use router.post with FormData for proper file upload handling
+        router.post(CourseController.update.url({ course: course.id }), formData, {
+            onSuccess: () => {
+                console.log('Form submitted successfully');
+            },
+            onError: (errors) => {
+                console.log('Form validation errors:', errors);
+            }
+        });
     };
 
     return (
@@ -67,20 +126,7 @@ export default function EditCourse({ course }: Props) {
             description="Update your course information"
         >
             <Head title="Edit Course" />
-            <Form
-                {...CourseController.update.form({ course: course.id })}
-                resetOnSuccess
-                disableWhileProcessing
-                encType="multipart/form-data"
-                className="max-w-4xl mx-auto"
-                defaultValues={{
-                    title: course.title,
-                    subtitle: course.subtitle,
-                    description: course.description,
-                    price: course.price.toString(),
-                }}
-            >
-                {({ processing, errors }) => (
+            <form onSubmit={handleSubmit} encType="multipart/form-data" className="max-w-4xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Main Form */}
                         <div className="lg:col-span-2 space-y-6">
@@ -93,6 +139,8 @@ export default function EditCourse({ course }: Props) {
                                     autoFocus
                                     tabIndex={1}
                                     name="title"
+                                    value={data.title}
+                                    onChange={(e) => setData('title', e.target.value)}
                                     placeholder="Enter course title"
                                 />
                                 <InputError
@@ -109,6 +157,8 @@ export default function EditCourse({ course }: Props) {
                                     required
                                     tabIndex={2}
                                     name="subtitle"
+                                    value={data.subtitle}
+                                    onChange={(e) => setData('subtitle', e.target.value)}
                                     placeholder="Enter course subtitle"
                                 />
                                 <InputError message={errors.subtitle} />
@@ -121,6 +171,8 @@ export default function EditCourse({ course }: Props) {
                                     required
                                     tabIndex={3}
                                     name="description"
+                                    value={data.description}
+                                    onChange={(e) => setData('description', e.target.value)}
                                     placeholder="Describe your course content and what students will learn"
                                     rows={6}
                                     className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -138,6 +190,8 @@ export default function EditCourse({ course }: Props) {
                                     required
                                     tabIndex={4}
                                     name="price"
+                                    value={data.price}
+                                    onChange={(e) => setData('price', e.target.value)}
                                     placeholder="0.00"
                                 />
                                 <InputError message={errors.price} />
@@ -179,7 +233,7 @@ export default function EditCourse({ course }: Props) {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-4">
-                                        {!thumbnailPreview && !thumbnailUrl ? (
+                                        {!thumbnailPreview && !data.thumbnail_url ? (
                                             <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors">
                                                 <input
                                                     type="file"
@@ -206,11 +260,11 @@ export default function EditCourse({ course }: Props) {
                                         ) : (
                                             <div className="relative">
                                                 <div className="aspect-video rounded-lg overflow-hidden bg-muted">
-                                                    <img
-                                                        src={thumbnailPreview || thumbnailUrl}
-                                                        alt="Course thumbnail preview"
-                                                        className="w-full h-full object-cover"
-                                                    />
+                                                        <img
+                                                            src={thumbnailPreview || data.thumbnail_url}
+                                                            alt="Course thumbnail preview"
+                                                            className="w-full h-full object-cover"
+                                                        />
                                                 </div>
                                                 <Button
                                                     type="button"
@@ -235,7 +289,7 @@ export default function EditCourse({ course }: Props) {
                                                 type="url"
                                                 name="thumbnail_url"
                                                 placeholder="https://example.com/image.jpg"
-                                                value={thumbnailUrl}
+                                                value={data.thumbnail_url}
                                                 onChange={handleUrlChange}
                                             />
                                         </div>
@@ -246,8 +300,7 @@ export default function EditCourse({ course }: Props) {
                             </Card>
                         </div>
                     </div>
-                )}
-            </Form>
+            </form>
         </AppLayout>
     );
 }
