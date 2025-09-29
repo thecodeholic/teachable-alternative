@@ -87,7 +87,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        $course->load('user');
+        $course->load(['user', 'modules.lessons']);
 
         $courseData = [
             'id' => $course->id,
@@ -100,6 +100,22 @@ class CourseController extends Controller
             'published' => $course->published,
             'created_at' => $course->created_at,
             'user' => $course->user,
+            'modules' => $course->modules->map(function ($module) {
+                return [
+                    'id' => $module->id,
+                    'title' => $module->title,
+                    'description' => $module->description,
+                    'sort_order' => $module->sort_order,
+                    'lessons' => $module->lessons->map(function ($lesson) {
+                        return [
+                            'id' => $lesson->id,
+                            'title' => $lesson->title,
+                            'content' => $lesson->content,
+                            'sort_order' => $lesson->sort_order,
+                        ];
+                    }),
+                ];
+            }),
         ];
 
         return Inertia::render('courses/show', [

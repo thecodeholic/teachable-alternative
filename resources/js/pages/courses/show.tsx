@@ -5,7 +5,23 @@ import { ArrowLeft, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import SortableModules from '@/components/SortableModules';
 import { type SharedData } from '@/types';
+
+interface Lesson {
+    id: number;
+    title: string;
+    content: string;
+    sort_order: number;
+}
+
+interface Module {
+    id: number;
+    title: string;
+    description: string;
+    sort_order: number;
+    lessons: Lesson[];
+}
 
 interface Course {
     id: number;
@@ -21,6 +37,7 @@ interface Course {
         name: string;
     };
     created_at: string;
+    modules: Module[];
 }
 
 interface Props {
@@ -105,6 +122,12 @@ export default function CourseShow({ course }: Props) {
                         )}
                     </CardContent>
                 </Card>
+
+                {auth.user && auth.user.id === course.user.id && (
+                    <div className="mt-8">
+                        <SortableModules modules={course.modules} courseId={course.id} />
+                    </div>
+                )}
             </div>
         </AppLayout>
     );
