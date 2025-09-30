@@ -11,11 +11,11 @@
         </div>
 
         <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="group bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up animation-delay-200">
                 <div class="flex items-center mb-4">
-                    <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Emily R.">
+                    <img class="h-12 w-12 rounded-full group-hover:scale-110 transition-transform duration-300" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Emily R.">
                     <div class="ml-4">
-                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Emily R.</div>
+                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors duration-300">Emily R.</div>
                         <div class="text-sm text-blue-600">Marketing Expert</div>
                     </div>
                 </div>
@@ -24,11 +24,11 @@
                 </blockquote>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="group bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up animation-delay-400">
                 <div class="flex items-center mb-4">
-                    <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="John D.">
+                    <img class="h-12 w-12 rounded-full group-hover:scale-110 transition-transform duration-300" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="John D.">
                     <div class="ml-4">
-                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white">John D.</div>
+                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors duration-300">John D.</div>
                         <div class="text-sm text-blue-600">Fitness Coach</div>
                     </div>
                 </div>
@@ -37,11 +37,11 @@
                 </blockquote>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="group bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-2xl p-6 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up animation-delay-600">
                 <div class="flex items-center mb-4">
-                    <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Sarah P.">
+                    <img class="h-12 w-12 rounded-full group-hover:scale-110 transition-transform duration-300" src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Sarah P.">
                     <div class="ml-4">
-                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Sarah P.</div>
+                        <div class="text-lg leading-6 font-medium text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors duration-300">Sarah P.</div>
                         <div class="text-sm text-blue-600">Graphic Designer</div>
                     </div>
                 </div>

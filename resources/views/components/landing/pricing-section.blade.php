@@ -10,9 +10,9 @@
             </p>
         </div>
 
-        <div class="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
+        <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
             <!-- Pricing Plan 1 -->
-            <div class="flex flex-col rounded-lg shadow-lg overflow-hidden dark:bg-gray-900">
+            <div class="group flex flex-col rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                 <div class="px-6 py-8 bg-gray-50 dark:bg-gray-700 sm:p-10 sm:pb-6">
                     <h3 class="text-lg leading-8 font-medium text-blue-600">Starter</h3>
                     <div class="mt-4 flex items-baseline text-6xl font-extrabold text-gray-900 dark:text-white">
@@ -51,20 +51,25 @@
                         </li>
                     </ul>
                     <div class="mt-8">
-                        <a href="{{ route('register') }}" class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                            Get Started
+                        <a href="{{ route('register') }}" class="group w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <span>Get Started</span>
+                            <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Pricing Plan 2 -->
-            <div class="flex flex-col rounded-lg shadow-lg overflow-hidden ring-2 ring-blue-600 dark:ring-blue-500">
+            <div class="group relative flex flex-col rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-3 ring-2 ring-blue-600 dark:ring-blue-500 scale-105">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <span class="inline-flex items-center px-4 py-1 rounded-full text-xs font-semibold bg-blue-500 text-white shadow-lg">
+                        Most Popular
+                    </span>
+                </div>
                 <div class="px-6 py-8 bg-blue-600 sm:p-10 sm:pb-6">
                     <h3 class="text-lg leading-8 font-medium text-white">Professional</h3>
-                    <p class="absolute top-0 -translate-y-1/2 transform rounded-full bg-blue-500 px-3 py-0.5 text-sm font-semibold tracking-wide text-white">
-                        Most Popular
-                    </p>
                     <div class="mt-4 flex items-baseline text-6xl font-extrabold text-white">
                         $79
                         <span class="ml-1 text-2xl font-medium text-blue-200">/month</span>
@@ -109,15 +114,18 @@
                         </li>
                     </ul>
                     <div class="mt-8">
-                        <a href="{{ route('register') }}" class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50">
-                            Choose Plan
+                        <a href="{{ route('register') }}" class="group w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <span>Choose Plan</span>
+                            <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Pricing Plan 3 -->
-            <div class="flex flex-col rounded-lg shadow-lg overflow-hidden dark:bg-gray-900">
+            <div class="group flex flex-col rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                 <div class="px-6 py-8 bg-gray-50 dark:bg-gray-700 sm:p-10 sm:pb-6">
                     <h3 class="text-lg leading-8 font-medium text-blue-600">Enterprise</h3>
                     <div class="mt-4 flex items-baseline text-6xl font-extrabold text-gray-900 dark:text-white">
@@ -164,8 +172,11 @@
                         </li>
                     </ul>
                     <div class="mt-8">
-                        <a href="{{ route('register') }}" class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                            Contact Sales
+                        <a href="{{ route('register') }}" class="group w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <span>Contact Sales</span>
+                            <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
                         </a>
                     </div>
                 </div>
