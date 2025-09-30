@@ -16,6 +16,16 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Content creator profile pages
+Route::get('/creator/{username}', [\App\Http\Controllers\ContentCreatorController::class, 'show'])
+    ->where('username', '[a-zA-Z0-9_-]+')
+    ->name('content-creator.profile');
+
+// Test route
+Route::get('/test', function () {
+    return 'Test route works';
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

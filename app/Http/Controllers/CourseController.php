@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class CourseController extends Controller
@@ -62,6 +63,18 @@ class CourseController extends Controller
         ]);
 
         $validated['user_id'] = Auth::id();
+
+        // Generate unique slug from title
+        $baseSlug = Str::slug($validated['title']);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Course::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        $validated['slug'] = $slug;
 
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {
@@ -169,6 +182,20 @@ class CourseController extends Controller
 
         // Remove thumbnail_url from validated data as it's not a database field
         unset($validated['thumbnail_url']);
+
+        // Generate new slug if title has changed
+        if ($course->title !== $validated['title']) {
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+            $counter = 1;
+
+            while (Course::where('slug', $slug)->where('id', '!=', $course->id)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+
+            $validated['slug'] = $slug;
+        }
 
         $course->update($validated);
 
