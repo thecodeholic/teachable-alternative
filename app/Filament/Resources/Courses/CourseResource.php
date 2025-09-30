@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Courses;
 use App\Filament\Resources\Courses\Pages\CreateCourse;
 use App\Filament\Resources\Courses\Pages\EditCourse;
 use App\Filament\Resources\Courses\Pages\ListCourses;
+use App\Filament\Resources\Courses\Pages\ViewCourse;
 use App\Filament\Resources\Courses\Schemas\CourseForm;
 use App\Filament\Resources\Courses\Tables\CoursesTable;
 use App\Models\Course;
@@ -49,6 +50,7 @@ class CourseResource extends Resource
         return [
             'index' => ListCourses::route('/'),
             'create' => CreateCourse::route('/create'),
+            'view' => ViewCourse::route('/{record}'),
             'edit' => EditCourse::route('/{record}/edit'),
         ];
     }
@@ -57,12 +59,7 @@ class CourseResource extends Resource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes()
-            ->with(['user', 'modules']);
+            ->with(['user', 'modules.lessons']);
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['user_id'] = auth()->id();
-        return $data;
-    }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Lessons\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\FileUpload;
@@ -34,8 +35,22 @@ class LessonForm
                         TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Textarea::make('content')
-                            ->rows(6)
+                        RichEditor::make('content')
+                            ->label('Lesson Content')
+                            ->placeholder('Enter lesson content...')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h2',
+                                'h3',
+                                'blockquote',
+                                'codeBlock',
+                            ])
                             ->columnSpanFull(),
                     ])
                     ->columns(2),

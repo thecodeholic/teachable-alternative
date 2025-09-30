@@ -3,10 +3,15 @@
 namespace App\Filament\Resources\Courses\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
+use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -15,6 +20,7 @@ class CourseForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(2)
             ->components([
                 Section::make('Course Information')
                     ->schema([
@@ -36,14 +42,8 @@ class CourseForm
                         Textarea::make('subtitle')
                             ->rows(3)
                             ->columnSpanFull(),
-                        Textarea::make('description')
-                            ->rows(4)
+                        MarkdownEditor::make('description')
                             ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-
-                Section::make('Media & Pricing')
-                    ->schema([
                         FileUpload::make('thumbnail')
                             ->image()
                             ->directory('course-thumbnails')
@@ -60,16 +60,87 @@ class CourseForm
                             ->prefix('$')
                             ->step(0.01)
                             ->minValue(0)
+                            ->required()
                             ->columnSpanFull(),
-                    ])
-                    ->columns(1),
 
-                Section::make('Settings')
-                    ->schema([
                         Toggle::make('published')
                             ->default(false),
                     ])
-                    ->columns(1),
+                    ->columns(2)
+                    ->columnSpanFull(),
+
+                Section::make('Course Modules')
+                    ->schema([
+                        Repeater::make('modules')
+                            ->relationship('modules')
+                            ->hiddenLabel()
+                            ->schema([
+                                TextInput::make('title')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull()
+                                    ->hiddenLabel()
+                                    ->placeholder('Module title'),
+
+                                TextInput::make('sort_order')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->hidden()
+                                    ->dehydrated(),
+
+                                Repeater::make('lessons')
+                                    ->relationship('lessons')
+                                    ->schema([
+                                        TextInput::make('title')
+                                            ->required(false)
+                                            ->maxLength(255)
+                                            ->columnSpanFull()
+                                            ->live(onBlur: true)
+                                            ->placeholder('Enter lesson title'),
+
+                                        TextInput::make('sort_order')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->hidden()
+                                            ->dehydrated(),
+                                    ])
+                                    ->columns(1)
+                                    ->itemLabel(fn(array $state): ?string => $state['title'] ?? 'New Lesson')
+                                    ->addActionLabel('Add Lesson')
+                                    ->orderColumn('sort_order')
+                                    ->reorderable()
+                                    ->collapsible()
+                                    ->collapsed(true)
+                                    ->cloneable()
+                                    ->deletable(true)
+                                    ->minItems(0)
+                                    ->maxItems(100)
+                                    ->extraItemActions([
+                                        Action::make('edit_lesson')
+                                            ->icon('heroicon-o-pencil')
+                                            ->label('Edit Lesson')
+                                            ->url(function (array $arguments, Repeater $component): string {
+                                                $itemData = $component->getItemState($arguments['item']);
+                                                return \App\Filament\Resources\Lessons\LessonResource::getUrl('edit', ['record' => $itemData['id'] ?? 1]);
+                                            })
+                                            ->openUrlInNewTab(false),
+                                    ]),
+                            ])
+                            ->columns(1)
+                            ->itemLabel(fn(array $state): ?string => $state['title'] ?? 'New Module')
+                            ->addActionLabel('Add Module')
+                            ->orderColumn('sort_order')
+                            ->reorderable()
+                            ->collapsible()
+                            ->collapsed(false)
+                            ->cloneable()
+                            ->deletable(true)
+                            ->columnSpanFull()
+                            ->defaultItems(0)
+                            ->minItems(0)
+                            ->maxItems(50),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }
