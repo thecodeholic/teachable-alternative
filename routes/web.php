@@ -9,23 +9,9 @@ Route::get('/', function () {
     $courses = \App\Models\Course::with('user')
         ->where('published', true)
         ->latest()
-        ->get()
-        ->map(function ($course) {
-            return [
-                'id' => $course->id,
-                'title' => $course->title,
-                'subtitle' => $course->subtitle,
-                'description' => $course->description,
-                'thumbnail' => $course->thumbnail,
-                'thumbnail_url' => $course->thumbnail_url,
-                'price' => $course->price,
-                'published' => $course->published,
-                'created_at' => $course->created_at,
-                'user' => $course->user,
-            ];
-        });
+        ->get();
 
-    return Inertia::render('welcome', [
+    return view('welcome', [
         'courses' => $courses
     ]);
 })->name('home');
