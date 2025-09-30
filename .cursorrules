@@ -1,0 +1,63 @@
+You are an expert in Laravel, Inertia.js, React, TypeScript, Tailwind CSS, and modern full-stack development.
+
+Key Principles
+- Write concise, technical responses with accurate examples in PHP, React, and TypeScript.
+- Follow Laravel, Inertia.js, and React best practices and conventions.
+- Use object-oriented programming with SOLID principles in the backend.
+- Modularize frontend logic using components and hooks.
+- Use descriptive and meaningful names for variables, methods, and files.
+- Adhere to Laravel's directory structure (e.g., app/Http/Controllers, app/Models).
+- Use dependency injection and service container binding where applicable.
+
+Laravel
+- Use PHP 8.2+ features (e.g., readonly properties, enums, match expressions).
+- Declare strict types at the top of all PHP files: `declare(strict_types=1);`
+- Follow PSR-12 coding standards and Laravel's architectural conventions.
+- Structure your application with clear MVC and feature-based organization if needed.
+- Use Form Request classes for validation and Policies for authorization.
+- Apply Eloquent ORM for modeling, with custom casts, accessors, and scopes.
+- Use Laravel features like route model binding, event broadcasting, and jobs.
+- Handle errors with Laravel’s exception handling and custom exceptions.
+- Use migrations, seeders, and factories to manage schema and sample data.
+- Write backend tests using PHPUnit or Pest.
+- Use Laravel’s built-in features like localization, queues, cache, and schedule.
+- Implement and extend Filament 3 for admin panels, following its resource structure.
+
+Inertia.js Integration
+- Use Inertia for client-side routing while keeping server-side controllers.
+- Define routes in Laravel (`routes/web.php`) and return Inertia responses from controllers.
+- Keep `app/Http/Controllers` clean and concise by delegating business logic to services.
+- Share data using Inertia’s `share()` method via `HandleInertiaRequests` middleware.
+- Use Laravel's `Inertia::render()` to send props and data to React components.
+- Use Inertia links and `useForm()` for navigation and form submissions in React.
+
+React + TypeScript
+- Structure files with atomic/component-first organization (`components/`, `hooks/`, `pages/`).
+- Use functional components and modern React APIs (hooks, context, suspense).
+- Ensure strong typing using TypeScript interfaces and utility types.
+- Use Inertia’s React adapter (`@inertiajs/react`) for routing and data handling.
+- Use `react-hook-form` or `useForm()` from Inertia for managing form state.
+- Apply Tailwind CSS classes directly in JSX for styling; use `clsx` or `tailwind-variants` for dynamic classnames.
+- Keep UI minimal, consistent, and responsive with Tailwind’s utility-first approach.
+
+Best Practices
+- Protect APIs and routes with Laravel Sanctum.
+- Share authenticated user, flash messages, or locale via Inertia’s `share()` function.
+- Use Laravel’s Resource classes to shape backend data for Inertia views.
+- Handle complex business logic with service classes and custom jobs.
+- Use Laravel’s background queues and scheduled tasks for automation.
+- Implement plan-based access control via middleware and feature flags.
+- Use caching and database indexing for performance improvements.
+- Test Inertia flows with Laravel Dusk and React unit tests (e.g., Vitest or Jest).
+
+Key Conventions
+1. Follow Laravel’s MVC architecture for route/controller/data flow.
+2. Use Inertia's `Inertia::render()` to connect controllers to React pages.
+3. Structure React pages under `resources/js/Pages`, and components under `resources/js/Components`.
+4. Pass server-side data as props via controllers or shared middleware.
+5. Use `Link` and `useForm()` from Inertia for all navigation and forms.
+6. Define layout wrappers (e.g., `AuthenticatedLayout`) to share common UI elements.
+7. Use Tailwind’s responsive utilities and avoid custom CSS when possible.
+8. Use Eloquent relationships and accessors to provide clean data to the frontend.
+9. Integrate Filament admin separately or under a dedicated route prefix (e.g., `/admin`).
+10. Manage frontend builds with Vite for hot-reloading and fast development.
