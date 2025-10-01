@@ -69,8 +69,8 @@ export default function DomainsIndex({ domains }: DomainsIndexProps) {
             <div className="p-6">
                 <div className="max-w-4xl mx-auto space-y-6">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Domains</h1>
-                        <p className="text-gray-700 mt-2">
+                        <h1 className="text-3xl font-bold text-white">Domains</h1>
+                        <p className="text-gray-300 mt-2">
                             Manage your custom domains and subdomains for your content creator profile.
                         </p>
                     </div>
@@ -164,35 +164,35 @@ export default function DomainsIndex({ domains }: DomainsIndexProps) {
                                     {domains.map((domain) => (
                                         <div
                                             key={domain.id}
-                                            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-colors"
+                                            className="flex items-center justify-between p-4 border border-gray-600 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
                                         >
                                             <div className="flex-1">
                                                 <div className="flex items-center space-x-2">
-                                                    <h4 className="text-lg font-medium text-gray-900">
+                                                    <h4 className="text-lg font-medium text-white">
                                                         {domain.full_domain}
                                                     </h4>
                                                     {domain.is_primary && (
-                                                        <Badge className="flex items-center space-x-1 bg-blue-100 text-blue-800 hover:bg-blue-100">
+                                                        <Badge className="flex items-center space-x-1 bg-blue-600 text-white hover:bg-blue-600">
                                                             <Star className="h-3 w-3" />
                                                             <span>Primary</span>
                                                         </Badge>
                                                     )}
                                                     {domain.is_verified ? (
-                                                        <Badge className="flex items-center space-x-1 bg-green-100 text-green-800 hover:bg-green-100">
+                                                        <Badge className="flex items-center space-x-1 bg-green-600 text-white hover:bg-green-600">
                                                             <Check className="h-3 w-3" />
                                                             <span>Verified</span>
                                                         </Badge>
                                                     ) : (
-                                                        <Badge className="flex items-center space-x-1 bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+                                                        <Badge className="flex items-center space-x-1 bg-yellow-600 text-white hover:bg-yellow-600">
                                                             <AlertCircle className="h-3 w-3" />
                                                             <span>Pending</span>
                                                         </Badge>
                                                     )}
-                                                    <Badge className="flex items-center space-x-1 bg-gray-100 text-gray-800 hover:bg-gray-100">
+                                                    <Badge className="flex items-center space-x-1 bg-gray-600 text-white hover:bg-gray-600">
                                                         {domain.type === 'subdomain' ? 'Subdomain' : 'Custom'}
                                                     </Badge>
                                                 </div>
-                                                <p className="text-sm text-gray-600 mt-1">
+                                                <p className="text-sm text-gray-300 mt-1">
                                                     Added on {new Date(domain.created_at).toLocaleDateString()}
                                                 </p>
                                             </div>
