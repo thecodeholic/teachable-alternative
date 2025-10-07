@@ -28,6 +28,13 @@ Route::domain('example.localhost')->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
+
+
+    // Enhanced Page Builder
+    Route::get('enhanced-page-builder', function () {
+        return Inertia::render('EnhancedCraftPageBuilder');
+    })->name('enhanced-page-builder');
+
     Route::get('domains', [\App\Http\Controllers\UserDomainController::class, 'index'])->name('domains.index');
     Route::post('domains', [\App\Http\Controllers\UserDomainController::class, 'store'])->name('domains.store');
     Route::put('domains/{domain}/primary', [\App\Http\Controllers\UserDomainController::class, 'setPrimary'])->name('domains.set-primary');

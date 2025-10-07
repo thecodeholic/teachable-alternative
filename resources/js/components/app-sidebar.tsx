@@ -14,7 +14,7 @@ import { dashboard } from '@/routes';
 import CourseController from '@/actions/App/Http/Controllers/CourseController';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Plus, GraduationCap, Globe } from 'lucide-react';
+import { LayoutGrid, Plus, GraduationCap, Globe, Palette } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const footerNavItems: NavItem[] = [];
@@ -44,6 +44,11 @@ export function AppSidebar() {
             title: 'Domains',
             href: '/domains',
             icon: Globe,
+        },
+        {
+            title: 'Enhanced Builder',
+            href: '/enhanced-page-builder',
+            icon: Palette,
         },
     ] : [];
 
